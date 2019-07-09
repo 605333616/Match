@@ -1,0 +1,79 @@
+﻿@using TES.Apps
+@using TES.Domain
+@using TES.Core
+@using TES.Service
+@model PageList<TES.Domain.Question>
+@{
+    ViewBag.Title = "问题";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<a href="~/Evaluation/Teacher">返回评教</a>
+<div id="Fraction">
+    @{
+        int Questiontype = AppHelper.LoginedUser.ID;
+        Teacher teacher = Container.Instance.Resolve<ITeacherService>().Get(Questiontype);
+        Questiontype questiontype = Container.Instance.Resolve<IQuestiontypeService>().Get(teacher.QuestionType);
+        
+        var privilegeListParemt = (Model).ToList();
+        foreach (var item in privilegeListParemt)
+        {
+            if (questiontype.ID != item.Questiontype.ID)
+            {
+                continue;
+            }
+            <span>
+                <input type="radio" value="0" name="@item.ID" />D&nbsp;&nbsp;0分&nbsp;&nbsp;|
+                <input type="radio" value="4" name="@item.ID" />C&nbsp;&nbsp;4分&nbsp;&nbsp;|
+                <input type="radio" value="6" name="@item.ID" />B&nbsp;&nbsp;6分&nbsp;&nbsp;|
+                <input type="radio" value="10" name="@item.ID" />A&nbsp;&nbsp;10分 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @item.Topic
+            </span><br />
+
+
+        }
+    }
+</div>
+<input type="button" value="确定" onclick="Check()" />
+<script type="text/javascript">
+    function Check() {
+        var id = $("#id").html();
+        var checkInputs = document.querySelectorAll('input:checked') // 获取选中的input
+        //for (var i = 0; i < checkInputs.length; i++) {
+        //    var v = checkInputs[i].value;
+        //    // 计算
+        //}
+        if (checkInputs.length == 10) {
+            var sum = 0;
+
+            for (var i = 0; i < checkInputs.length; i++) sum += +checkInputs[i].value;
+            alert("打分" + sum);
+            $.ajax({
+                type: "post",
+                url: "ToAdd",
+                data: { sum: sum },
+                success: function (data, textStatus) {
+                    OnComplete(data);
+                },
+                error: function () {
+                    alert("系统错误，无法登录，请与管理员联系!\n");
+                }
+            });
+        }
+        else {
+            alert("请选完");
+        }
+        
+
+    }
+    function OnComplete(result) {
+
+        window.parent.location.href = "@Url.Content("~/Evaluation/Teacher")";
+    }
+
+
+</script>
+
+
+

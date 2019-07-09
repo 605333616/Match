@@ -1,0 +1,130 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            setDivSize();
+            window.onresize = function () { setDivSize(); };
+        });
+
+        function setDivSize() {
+            var screenHeight = getTotalHeight();
+            var readerDivHeight = screenHeight - 75 - 31;
+
+            $("#divSubMenu").css("height", readerDivHeight);
+            $("#divContentPage").css("height", readerDivHeight - 20);
+
+            var divSubMenuWidth = $("#divSubMenu").width();
+            var screenWidth = getTotalWidth();
+
+            var divContentPageWidth = screenWidth - divSubMenuWidth - 40;
+            $("#divContentPage").width(divContentPageWidth);
+        }
+
+        function getTotalHeight() {
+            if (!$.support.leadingWhitespace) {
+                return document.compatMode == "CSSlCompat" ?
+                    document.documentElement.clientHeight :
+                    document.body.clientHeight;
+            } else {
+                return self.innerHeight;
+            }
+        }
+
+        function getTotalWidth() {
+            if (!$.support.leadingWhitespace) {
+                return document.compatMode == "CSSlCompat" ?
+                    document.documentElement.clientWidth :
+                    document.body.clientWidth;
+            } else {
+                return self.innerWidth;
+            }
+        }
+
+        $(function () {
+            $("#tab li").click(
+                    //找父亲（li）下面的ul
+                    function () {
+                        if ($(this).find("ul").is(':hidden')) {//如果当前隐藏
+                            $(this).find("ul").fadeIn(300);//那么就显示div
+                        }
+                        else//否则
+                        {
+                            $(this).find("ul").fadeOut(300);//就隐藏div
+                        }
+                    }
+            );
+        });
+    </script>
+</head>
+<body>
+    <div class="page">
+
+        <div style="width:100%;">
+
+            <div style="border:0px;float:left;width:100%;height:75px;background:url('@Url.Content("~/Content/Images/Top/m_01.gif")');"></div>
+
+            <div id="divHeader">
+
+            </div>
+        </div>
+
+
+
+        <div id="divCenter">
+            <div id="divSubMenu" class="divSubMenu">
+                <div>
+                    <img src="@Url.Content("~/Content/Images/LeftMenu/m_12.gif")" alt="" width="127" height="33" />
+                </div>
+                <ul id="tab" style="list-style-type: none;margin:0; padding: 0; width: 127px; height: 26px; text-align: center; line-height: 20px;">
+                    <li class="menuRow" style="display:block;float:left;width:126px;">@Html.ActionLink("首页", "Index", "Home")</li>
+                        @{                                                       
+                            var privilegeListParent = (ViewBag.PrivilegeList as IList<TES.Domain.SystemFunction>).Where(m => m.Parent == null && m.IsShow == true).OrderBy(m => m.Idx).ToList();
+                            foreach (TES.Domain.SystemFunction function in privilegeListParent)
+                            {
+                                <li class="menuRow" style="display:block;float:left;width:126px;">
+                                <span>@Html.ActionLink(function.SystemFunctionName, function.ActionName, function.ControllerName)</span>
+                                @if (function.Children == null)
+                                {
+                                    continue;
+                                }
+                                <ul style="list-style-type: none;display: none;text-align:center;text-align:center;margin:0;padding:0;">
+                                    @foreach (TES.Domain.SystemFunction item in function.Children.Where(m => m.IsShow == true).ToList())
+                                    {
+                                        <li class="menuSubRow" style="float: left;width:112px;height:26px;display:block;">
+                                            @Html.ActionLink(item.SystemFunctionName, item.ActionName, item.ControllerName)
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+
+
+
+
+
+            <div id="divContentPage">
+                <div id="contentPageTitle" style="text-align:center;border-bottom:1px solid #808080;font-family:'Microsoft JhengHei UI';">@ViewBag.Title</div>
+                <div id="titleContentDivider"></div>
+                @RenderBody()
+            </div>
+        </div>
+        <div style="clear:both;"></div>
+        <div id="divFooter">
+            <div style="color:white ">
+                Cqie R 2017-2020 .1700104(一) All Rigths Reserved.
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

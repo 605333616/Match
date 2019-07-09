@@ -1,0 +1,260 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 9pt;
+}
+
+input[type="text"] {
+    border: solid 1px #BDBDBD;
+}
+
+input[type="password"] {
+    border: solid 1px #BDBDBD;
+    width: 147px;
+}
+
+textarea {
+    border: solid 1px #BDBDBD;
+}
+
+select {
+    border: solid 1px #BDBDBD;
+    width: 152px;
+}
+
+a {
+    font-size: 9pt;
+    text-decoration: none;
+    /*display:inline;*/
+}
+
+.field-validation-error {
+    color: red;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid red;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: 700;
+    color: red;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.editor-label {
+    margin-top: 5px;
+    float: left;
+    width: 100px;
+}
+
+.editor-field {
+    margin-top: 5px;
+}
+
+#menu ul {
+    direction: ltr;
+    float: left;
+    list-style: none;
+}
+
+#divHeader {
+    height: 75px;
+}
+
+#divRender {
+    background-color: #34ABCD;
+    border: 0;
+}
+
+#divFooter {
+    background-image: url('../Content/Images/top/m_55.gif');
+    background-repeat: repeat-x;
+    text-align: center;
+    clear: both;
+    height: 29px;
+}
+
+#divContentPage {
+    float: left;
+    padding: 10px 10px 10px 10px;
+    overflow: auto;
+}
+
+.divSubMenu {
+    width: 140px;
+    float: left;
+    background-color: #b8d9ff;
+    border: 0;
+}
+
+    .divSubMenu ul, .divSubMenu li {
+        list-style: none;
+        text-align: center;
+        display: block;
+    }
+
+.titleContentDivider {
+    margin-bottom: -6px;
+    height: 6px;
+    background-image: url('../Content/Images/m_26.gif');
+    background-repeat: repeat-x;
+}
+
+.contentPageTitle {
+    width: 120px;
+    height: 23px;
+    background: url(../Centent/Image/m_17.gif);
+    font-size: 9pt;
+    line-height: 23px;
+}
+
+.gridTable {
+    background-color: #B3E1F9;
+    border-top: 1px solid #007ea2;
+    border-bottom: 1px solid #007ea2;
+}
+
+.gridTablefirstchild {
+    border-left: 1px solid #007ea2;
+}
+
+.gridTabletd {
+    border-bottom: 1px solid #007ea2;
+}
+.btn3 {
+    background-image: url(Images/NOt3.gif);
+    width: 62px;
+    height: 21px;
+    border: 0;
+    color: #4565B1;
+    text-align: left;
+    padding-top: 3px;
+    padding-left: 17px;
+    cursor: pointer;
+}
+
+.btn9 {
+    background-image: url(Images/NOt9.gif);
+    width: 134px;
+    height: 21px;
+    border: 0;
+    color: #4565B1;
+    text-align: left;
+    padding-top: 3px;
+    padding-left: 17px;
+}
+
+
+.divNotice {
+    color: Red;
+}
+.menuRow1  {
+    
+
+}
+.menuRow {
+    /*background-image: url("Images/LeftMenu/m_30.gif");*/
+    background-repeat: no-repeat;
+    background:red;
+    margin:7px;
+    margin-left:7px;
+    box-shadow: 10px 10px 5px #333;
+}
+
+    .menuRow a {
+        float: left;
+        padding-top: 5px;
+        display: block;
+        width: 117px;
+        height: 26px;
+        /*background-image: url("Image/LeftMenu/m_30.gif");*/
+        background-repeat: no-repeat;
+    }
+
+.menuSubRow {
+    /*background-image: url("Images/LeftMenu/LeftMenuButtonBg1.gif");*/
+}
+
+    .menuSubRow a {
+    height:20px;margin-left:7px;
+    background-image:url(Images/LeftMenu/m_30.gif);
+    }
+
+.menuRow:hover {
+    /*background-image: url('Images/LeftMenu/m_30_pro.gif');*/
+    background:#007ea2;
+    width:100px;
+}
+
+Label {
+    text-align: center;
+    display: block;
+    float: left;
+    width: 130px;
+    height: 26px;
+    padding-top: 3px;
+}
+
+/*模态对话框样式*/
+#basic-modal-content {
+    display: none;
+}
+
+#simplemodal-overlay {
+    background-color: #000;
+    cursor: wait;
+}
+
+#simplemodal-container {
+    height: 39px;
+    width: 39px;
+    color: #bbb;
+    background-color: #333;
+}
+
+    #simplemodal-container .simplemodal-data {
+    }
+
+    #simplemodal-container code {
+        background: #141414;
+        border-left: 3px solid #65B43D;
+        color: #bbb;
+        display: block;
+        font-size: 12px;
+        margin-bottom: 12px;
+        padding: 4px 6px 6px;
+    }
+
+    #simplemodal-container a {
+        color: #ddd;
+    }
+
+        #simplemodal-container a.modalCloseImg {
+            background: url(../img/basic/x.png) no-repeat;
+            width: 25px;
+            height: 29px;
+            display: inline;
+            z-index: 3200;
+            position: absolute;
+            top: -15px;
+            right: -16px;
+            cursor: pointer;
+        }
+
+    #simplemodal-container h3 {
+        color: #84b8d9;
+    }
+
+#simplemodal-container-loading {
+    width: 39px;
+    height: 39px;
+}

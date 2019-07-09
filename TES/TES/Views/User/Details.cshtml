@@ -1,0 +1,102 @@
+﻿
+@using TES.Domain;
+
+@{
+    ViewBag.Title = "个人信息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var teacher = ViewBag.teacher as Teacher;
+    var student = ViewBag.student as Student;
+}
+
+@Html.ActionLink("返回列表", "Index")
+@*@if (student != null)
+{ 
+    @Html.ActionLink("修改个人信息", "Edit", new {id=student.ID })
+}
+else
+{ 
+    @Html.ActionLink("修改个人信息", "Edit", new {id1=teacher.ID })
+}*@
+
+<table class="MessageTable" border="0" cellpadding="0" cellspacing="0" style="background-color:beige;width:30%;text-align:center;margin:auto">
+    @if (student != null)
+    {
+        <tr>
+            <td width="120px">@Html.LabelFor(m => student.StudentName)</td>
+            <td width="200px">@Html.DisplayFor(m => student.StudentName)</td>
+        </tr>
+        @*<tr>
+            <td>@Html.LabelFor(m => student.UserID.UserName)</td>
+            <td>@Html.DisplayFor(m => student.UserID.UserName)</td>
+        </tr>*@
+        <tr>
+            <td>@Html.LabelFor(m => student.StudentNumber)</td>
+            <td>@Html.DisplayFor(m => student.StudentNumber)</td>
+        </tr>
+        <tr>
+           @{User student1 = TES.Core.Container.Instance.Resolve<TES.Service.IUserService>().Get(@student.ID);}
+           <td>@Html.LabelFor(m => teacher.UserID.Account)</td>
+           <td>@student1.Account</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => student.Sex)</td>
+            <td>@Html.LabelFor(m => student.Sex, student.Sex == 1 ? "男" : "女")</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => student.Class)</td>
+            <td>
+                
+                    @Html.DisplayFor(m => student.Class)<span>,</span>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => student.College)</td>
+            <td>@Html.DisplayFor(m => student.College)</td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td width="120px">@Html.LabelFor(m => teacher.TeacherName)</td>
+            <td width="200px">@Html.DisplayFor(m => teacher.TeacherName)</td>
+        </tr>
+        @*<tr>
+            <td>@Html.LabelFor(m => teacher.UserID.UserName)</td>
+            <td>@Html.DisplayFor(m => teacher.UserID.UserName)</td>
+        </tr>*@
+        <tr>
+            <td>@Html.LabelFor(m => teacher.TeacherNumber)</td>
+            <td>@Html.DisplayFor(m => teacher.TeacherNumber)</td>
+        </tr>
+        <tr>
+            @{User teacher1 = TES.Core.Container.Instance.Resolve<TES.Service.IUserService>().Get(@teacher.ID);}
+            <td>@Html.LabelFor(m => teacher.UserID.Account)</td>
+            <td>@teacher1.Account</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => teacher.Sex)</td>
+            <td>@Html.LabelFor(m => teacher.Sex, teacher.Sex == 1 ? "男" : "女")</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => teacher.Class)</td>
+            <td>
+                @{
+                    
+                }
+                @*@foreach (Class item in teacher.Class)
+                {
+                    
+                }*@@Html.DisplayFor(m => teacher.Class)
+              <span>,</span>
+            </td>
+
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => teacher.College)</td>
+            <td>@Html.DisplayFor(m => teacher.College)</td>
+        </tr>
+    }
+</table>
+
+

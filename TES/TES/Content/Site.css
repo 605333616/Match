@@ -1,0 +1,306 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    font-size: 9pt;
+}
+
+body {
+    margin: 0;
+    font-size: 9pt;
+}
+
+.field-validation-error {
+    color: #ff0000;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.editor-label {
+    margin-top: 5px;
+    float: left;
+    width: 100px;
+}
+
+.editor-field {
+    margin-top: 5px;
+}
+
+.display-label {
+    margin-top: 5px;
+    float: left;
+    width: 100px;
+}
+
+.display-field {
+    margin-top: 5px;
+}
+
+#menu ul {
+    direction: ltr;
+    float: left;
+    list-style: none;
+}
+
+#divHeader {
+    height: 75px;
+}
+
+#divRender {
+    background-color: #34ABCD;
+    border: 0;
+}
+
+#divFooter {
+    background-image: url('../Content/Images/top/m_55.gif');
+    background-repeat: repeat-x;
+    text-align: center;
+    clear: both;
+    height: 29px;
+}
+
+#divContentPage {
+    float: left;
+    padding: 10px 10px 10px 10px;
+    overflow: auto;
+    background:url('../Content/Images/zym.gif') no-repeat;
+    height:100%;
+    width:100%;
+    overflow:hidden;
+    background-size:cover;
+}
+
+.divSubMenu {
+    width: 127px;
+    float: left;
+    background-color: #b8d9ff;
+    border: 0;
+}
+
+a {
+    font-size: 9pt;
+    text-decoration: none;
+}
+
+
+.titleContentDivider {
+    /*background-image: url('../Content/Images/m_26.gif');*/
+    background-repeat: repeat-x;
+}
+
+.titleContentDivider1 {
+    /*background-image: url('../Content/Images/m_26-.gif');*/
+}
+
+.contentPageTitle {
+    font-size: 9pt;
+}
+
+.gridTable {
+    background-color: #B3E1F9;
+    border-top: 1px solid #007ea2;
+    border-bottom: 1px solid #007ea2;
+}
+
+.gridTablefirstchild {
+    border-left: 1px solid #007ea2;
+}
+
+.gridTabletd {
+    border-bottom: 1px solid #007ea2;
+}
+
+
+.btn3 {
+    background-image: url(Imagest3.gif);
+    width: 62px;
+    height: 21px;
+    border: 0px;
+    color: #4565B1;
+    text-align: left;
+    padding-top: 3px;
+    padding-left: 17px;
+    cursor: pointer;
+}
+
+.btn9 {
+    background-image: url(Imagest9.gif);
+    width: 134px;
+    height: 21px;
+    border: 0px;
+    color: #4565B1;
+    text-align: left;
+    padding-top: 3px;
+    padding-left: 17px;
+}
+
+input[type="text"] {
+    border: solid 1px #BDBDBD;
+}
+
+input[type="password"] {
+    border: solid 1px #BDBDBD;
+    width: 147px;
+}
+
+textarea {
+    border: solid 1px #BDBDBD;
+}
+
+select {
+    border: solid 1px #BDBDBD;
+    width: 152px;
+}
+
+.divNotice {
+    color: Red;
+}
+
+.menuRow {
+    /*background-image: url('Images/LeftMenu/m_30.gif');*/
+    display:block;
+    background-repeat: no-repeat;
+}
+
+.menuSubRow {
+    display: block;
+    border-bottom: 1px solid #4b4a5e;
+    text-decoration: none;
+    color: #d9d9d9;
+    padding: 1px;
+    padding-left: 12px;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+
+    /*background-image:url('Images/LeftMenu/LeftMenuButtonBg1.gif');*/ /*子菜单*/
+}
+
+.menuRow:hover {
+    width: 100%;
+    max-width: 140px;
+    /*margin: 6px auto 3px;*/
+    background-color: #4565B1;
+    border-radius: 2px;
+    /*cursor: pointer;*/
+    display: block;
+    color: #ffeeee;
+    font-size: 14px;
+    border-bottom: 1px solid #CCC;
+    position: relative;
+    -webkit-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+    /*background-image: url('Images/LeftMenu/m_30_pro.gif');*/ /*一级菜单*/
+}
+
+label {
+    text-align: center;
+    display: block;
+    float: left;
+    width: 142px;
+    height: 26px;
+    padding-top: 2px;
+    padding-right: 10px;
+}
+
+
+
+/*模态对话框样式*/
+#basic-modal-content {
+    display: none;
+}
+
+#simplemodal-overlay {
+    background-color: #000;
+    cursor: wait;
+}
+
+#simplemodal-container {
+    height: 39px;
+    width: 39px;
+    color: #bbb;
+    background-color: #333;
+}
+
+    #simplemodal-container .simplemodal-data {
+    }
+
+    #simplemodal-container code {
+        background: #141414;
+        border-left: 3px solid #65B43D;
+        color: #bbb;
+        display: block;
+        font-size: 12px;
+        margin-bottom: 12px;
+        padding: 4px 6px 6px;
+    }
+
+    #simplemodal-container a {
+        color: #ddd;
+    }
+
+        #simplemodal-container a.modalCloseImg {
+            background: url(../img/basic/x.png) no-repeat;
+            width: 25px;
+            height: 29px;
+            display: inline;
+            z-index: 3200;
+            position: absolute;
+            top: -15px;
+            right: -16px;
+            cursor: pointer;
+        }
+
+    #simplemodal-container h3 {
+        color: #84b8d9;
+    }
+
+#simplemodal-container-loading {
+    width: 39px;
+    height: 39px;
+}
+
+
+        .menuRow span {
+            cursor: pointer;
+            position: relative;
+            transition: 0.5s;
+        }
+        .menuRow span:after {
+                content: '»';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                left:-70px;
+                right: -20px;
+                transition: 0.5s;
+                padding-top:1.5px;
+            }
+        .menuRow:hover span:after {
+                opacity:1;
+                right: 0;
+            }
+        .menuRow a {
+        width:65px;height:20px;
+        }
+
+.menuSubRow a{
+color:white;
+}
+

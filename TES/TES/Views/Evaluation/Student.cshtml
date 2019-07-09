@@ -1,0 +1,88 @@
+﻿@using TES.Apps
+@model PageList<TES.Domain.Teacher>
+
+@{
+    ViewBag.Title = "学生评价";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="@Url.Content("~/Content/css/ViewPage.css")" rel="stylesheet" type="text/css" />
+}
+@using (Html.BeginForm())
+{
+    int class1 = (int)ViewData["Class"];
+    /*-----------------------------------------------------------------------------------------------*/
+    string clas = class1.ToString();
+    IList<TES.Domain.Class> cla = TES.Core.Container.Instance.Resolve<TES.Service.IClassService>().GetAll();
+    foreach (TES.Domain.Class item in cla)
+    {
+        if (@item.ClassNumber == clas) 
+        {
+        @item.TeacherId.TeacherName;<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  
+          @item.TeacherId.TeacherNumber;<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>  
+          @item.TeacherId.Class;<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+     int c = 0;
+        IList<TES.Domain.Evaluate> p = TES.Core.Container.Instance.Resolve<TES.Service.IEvaluateService>().GetAll();
+        foreach (TES.Domain.Evaluate i in p)
+            {
+                if (i.TeacherID.ID == item.TeacherId.ID && i.UserID.ID == AppHelper.LoginedUser.ID)
+                {
+                    c = 1;
+                    break;
+                }
+            }
+        if (c == 1)
+        {
+            <span>已评教</span>
+        }
+        else
+        {
+           <button onclick="OnAJXBegin(this)" value="@item.ID">评教</button>
+        }
+
+        
+      <br />
+        }
+        
+    }
+    /*-----------------------------------------------------------------------------------------------*/
+    
+    
+   
+
+}
+    
+<script type="text/javascript">
+    function OnAJXBegin(ID) {
+        var id = ID.value;
+        //---------------
+        $.ajax({
+            type: "post",
+            url: "StudentQuestion",
+            data: { ID: id },
+            success: function (data) {
+                //window.location.href = '/Login/Index';
+                window.location.href = '@Url.Action("StudentQuestion", "Evaluation")';
+            },
+            error: function () {
+                alert("系统错误，请与管理员联系!\n");
+            }
+        });
+        //---------------
+            @*$.ajax({
+                type: "post",
+                url: "StudentQuestion",
+                data: { ID: id },
+                success: function (data) {
+                    //window.location.href = '/Login/Index';
+                    window.location.href = '@Url.Action("StudentQuestion", "Evaluation")';                    
+                },
+                error: function () {
+                    alert("系统错误，请与管理员联系!\n");
+                }
+            });*@
+        
+    }
+    function OnComplete(result) {
+        window.parent.location.href = "@Url.Content("~/Evaluation/Question")";
+    }
+</script>
+

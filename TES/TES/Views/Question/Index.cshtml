@@ -1,0 +1,48 @@
+﻿@using TES.Domain;
+@{
+    ViewBag.Title = "问卷修改";
+    var QuestionList = ViewBag.QuestionList as IList<Question>;
+    var QuestiontypeList = ViewData["QuestiontypeList"] as IList<Questiontype>;
+}
+<link href="@Url.Content("~/Content/Style/ViewPage.css")" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript">
+    function SubmitForm() {
+        $("form").eq(0).submit();
+    }
+</script>
+<p>
+    @Html.ActionLink("创建问题", "Create")
+</p>
+@using (Html.BeginForm())
+{
+    <p>
+        <span>筛选：</span>
+        @Html.DropDownList("QuestiontypeID", new SelectList(QuestiontypeList, "ID", "QuestiontypeName"), "问卷1", new { onchange = "SubmitForm()" })
+    </p>
+    <table cellpadding="0" cellspacing="0" class="dataGrid">
+        <tr>
+            <th>问题</th>
+            <th>功能名称</th>
+        </tr>
+        @if (QuestionList == null || QuestionList.Count() == 0)
+        {
+            <tr>
+                <td colspan="2">没有满足条件的记录！</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in QuestionList)
+            {
+                <tr>
+                    <td>
+                        @item.Topic
+                    </td>
+                    <td>
+                        @Html.ActionLink("编辑问题", "Edit", new { id = item.ID })|@Html.ActionLink("删除", "Delete", new { id = item.ID }, new { onclick = "return confirm('你确定要删除此条数据吗？');" })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+}

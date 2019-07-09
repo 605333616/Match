@@ -1,0 +1,71 @@
+﻿@using TES.Apps
+@model PageList<TES.Domain.Role>
+@{
+    ViewBag.Title = "角色列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Content("~/Content/css/ViewPage.css")" rel="stylesheet" type="text/css" />
+@Html.ActionLink("创建", "Create")
+<table cellpadding="0" cellspacing="0" class="dataGrid">
+    <tr>
+        <th>
+            名称
+        </th>
+        <th>
+            状态
+        </th>
+        <th>
+            用户个数
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+    @if (Model == null || Model.Count() == 0)
+    {
+        <tr><td colspan="4">没有满足条件的数据！</td></tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.RoleName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsActive)
+                </td>
+                <td>
+                    @if (item.Users == null || item.Users.Count == 0)
+                    {
+                        <span>没有配置</span>
+                    }
+                    else
+                    {
+                        @item.Users.Count
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("修改", "Edit", new { id = item.ID })|
+                    @Html.ActionLink("删除", "Delete", new { id = item.ID }, new { onclick = "return confirm('真的打算删除吗?')" })|
+                    @if (item.IsActive)
+                    {
+                        @Html.ActionLink("注销", "SwitchStatus", new { id = item.ID }, new { onclick = "return confirm('真的打算注销吗?')" });
+                    }
+                    else
+                    {
+                        @Html.ActionLink("激活", "SwitchStatus", new { id = item.ID }, new { onclick = "return confirm('真的打算激活吗?')" });
+                    }
+                    |
+                    @Html.ActionLink("配置权限", "Index", "Authorize", new { roleID = item.ID }, new { })
+                </td>
+            </tr>
+        }
+    }
+</table>
+<div class="pager">
+    @Html.Raw(Html.Pager(Model.PageIndex, Model.PageSize, Model.TotalCount, Model.PageIndex))
+</div>
+

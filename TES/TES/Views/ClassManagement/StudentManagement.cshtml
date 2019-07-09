@@ -1,0 +1,95 @@
+﻿@using TES.Domain;
+@model Student
+@using NHibernate.Criterion
+@using TES.Domain
+@using TES.Manager
+@using TES.Core
+@{
+    ViewBag.Title = "配置班级";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var FunctionList = ViewBag.FunctionList as IList<SystemFunction>;
+    var topFunctionList = ViewData["TopFunctions"] as IList<SystemFunction>;
+}
+<link href="@Url.Content("~/Content/Style/ViewPage.css")" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript">
+    function SubmitForm() {
+        $("form").eq(0).submit();
+    }
+</script>
+<p>
+    @Html.ActionLink("返回列表", "Index", "Role")
+</p>
+<fieldset>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.StudentName):
+        @Html.DisplayFor(model => model.StudentName)
+    </div>
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        @Html.HiddenFor(m => m.ID)
+        @Html.Hidden("roleID", Model.ID)
+        <span>筛选：</span>
+        @*@Html.DropDownList("topFunctionID", new SelectList(topFunctionList, "ID", "SystemFunctionName"), "-----全部-----", new { onchange = "SubmitForm()" })*@
+    </p>
+    <table cellpadding="0" cellspacing="0" class="dataGrid" id="tbFuns">
+        <tr>
+            <th style="text-align:center">
+                班级
+            </th>
+        </tr>
+
+        <tr>
+            @{string i = "";
+            IList<Class> class1 = Container.Instance.Resolve<TES.Service.IClassService>().GetAll();
+            foreach (Class ime in class1)
+            {
+                if (i != ime.ClassName)
+                {
+                    i = ime.ClassName;
+                    <td> @ime.ClassName
+                        @if(Model.Class.ToString()==ime.ClassNumber){
+                            <input type="radio" name="killOrder" value="@ime.ClassNumber" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" name="killOrder"value="@ime.ClassNumber" />
+                        }
+                        
+                    
+                    </td>
+                }
+            }
+            }
+        </tr>
+
+    </table>
+}
+
+        <input type="submit" class="btn3" value="保存" onclick="return CheckSelectedRoles()" />
+
+<script language="javascript" type="text/javascript">
+
+    function CheckSelectedRoles() {
+        var checkInputs = document.querySelectorAll('input:checked');
+        var a = checkInputs[0].value;
+        var stduentID =@Model.ID
+        $.ajax({
+            type: "post",
+            url: "StduentClass",
+            data: { a: a, stduentID: stduentID },
+            success: function (data, textStatus) {
+                OnComplete(data); 
+            },
+            error: function () {
+                alert("系统错误，请与管理员联系!\n");
+            }
+        });
+    }
+
+    function OnComplete(result) {
+
+        window.parent.location.href = "@Url.Content("~/ClassManagement/Index")";
+    }
+</script>

@@ -1,0 +1,130 @@
+﻿@using TES.Apps
+@model PageList<TES.Domain.User>
+@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="@Url.Content("~/Content/css/ViewPage.css")" rel="stylesheet" type="text/css" />
+}
+
+<p>
+    @Html.ActionLink("创建新用户", "Create")
+</p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        账户名:@Html.TextBox("userName")
+        <input type="submit" value="查询" class="btn3" />
+    </p>
+}
+
+<table cellpadding="0" cellspacing="0" class="dataGrid">
+    <tr>
+        <th>用户名</th>
+        <th>账户名</th>
+        <th>
+            状态
+        </th>
+        <th>
+            角色
+        </th>
+        <th>
+            操作
+        </th>
+    </tr>
+    @if (Model == null || Model.Count() == 0)
+    {
+        <tr>
+            <td colspan="5">没有满足条件的数据!</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsActive, new { @disabled = "disabled" })
+                    @{
+            if (item.IsActive)
+            {
+                @:启用
+            }
+            else
+            {
+                @:停用
+            }
+                    }
+                </td>
+                <td>
+                    @if (item.Roles == null || item.Roles.Count == 0)
+                    {
+                        <span>没有配置</span>
+                    }
+                    else
+                    {
+                        string roList = "";
+                        foreach (var r in item.Roles)
+                        {
+                            if (roList == "")
+                            {
+                                roList = r.RoleName;
+                            }
+                            else
+                            {
+                                roList = roList + "," + r.RoleName;
+                            }
+                        }
+                        @roList
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("配置角色", "AssignRole", new { id = item.ID },
+                    new { @class = "abc" })|@Html.ActionLink("详细信息", "Details",
+                    new { id = item.ID })|@if (item.IsActive)
+                    {
+                        if (item.Account.ToLower().Trim() != "123" && item.Account.ToLower().Trim() != AppHelper.LoginedUser.Account)
+                        {
+                            @Html.ActionLink("注销", "SwitchStatus", "User", new { id = item.ID }, new { onclick = "return confirm('你要注销吗')" })@:|
+                                           }
+                        else
+                        {
+                            @:<span style="color:gray">注销</span>|
+                                           }
+                    }
+                    else
+                    {
+                        @Html.ActionLink("激活", "SwitchStatus", new { id = item.ID },
+                 new { onclick = "return confirm('真的打算激活吗?')" });@:|
+                                       }
+                    @Html.ActionLink("修改", "Edit", new { id = item.ID })
+                    @{
+            if (item.Account.ToLower() != "123"
+                && item.Account != AppHelper.LoginedUser.Account
+                && (item.Roles == null || item.Roles.Count == 0)
+                && item.IsActive == false
+                )
+            {
+                @Html.ActionLink("删除", "Delete", new { id = item.ID },
+            new { onclick = "return confirm('真的要删除吗?')" })
+            }
+            else
+            {
+                @:<span style="color:gray">删除</span>
+            }
+                    }
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<div class="pager">
+    @Html.Raw(Html.Pager(Model.PageIndex, Model.PageSize, Model.TotalCount, Model.PageIndex))
+</div>

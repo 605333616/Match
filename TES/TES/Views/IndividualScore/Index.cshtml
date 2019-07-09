@@ -1,0 +1,21 @@
+﻿
+@using TES.Apps
+@model PageList<TES.Domain.Evaluate>
+@{
+    ViewBag.Title = "个人评价";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="@Url.Content("~/Content/css/ViewPage.css")" rel="stylesheet" type="text/css" />
+}
+
+        <div>教师名： @AppHelper.LoginedUser.UserName</div>
+        <div>教师号：@ViewData["TeacherNumber"]</div>
+        <div>学生打的平均成绩：@ViewData["studentAverage"] -占比40%</div>
+        <div>老师打的平均成绩：@ViewData["teacherAverage"] -占比25%</div>
+        <div>领导打的平均成绩：@ViewData["leadershipAverage"] -占比35%</div>
+<div>总平均成绩：@ViewData["Average"]</div>
+
+
+
+
+
+

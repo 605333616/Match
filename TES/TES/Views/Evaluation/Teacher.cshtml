@@ -1,0 +1,64 @@
+﻿@using TES.Apps
+@model PageList<TES.Domain.Teacher>
+@{
+    ViewBag.Title = "老师评价";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="@Url.Content("~/Content/css/ViewPage.css")" rel="stylesheet" type="text/css" />
+}
+@using (Html.BeginForm())
+{
+    string College = (string)ViewData["College"];
+    var privilegeListParent = Model.Where(m => m.College == College && m.ID != (int)ViewData["TeacherID"]).ToList();
+    foreach (var item in privilegeListParent)
+    {
+        if (item.Leadership != true)
+        {        
+        @item.TeacherName;<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        @item.TeacherNumber;<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        @item.College;<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        int c = 0;
+        IList<TES.Domain.Evaluate> p = TES.Core.Container.Instance.Resolve<TES.Service.IEvaluateService>().GetAll();
+        foreach (TES.Domain.Evaluate i in p)
+            {
+                if (i.TeacherID.ID == item.ID && i.UserID.ID == AppHelper.LoginedUser.ID)
+                {
+                    c = 1;
+                    break;
+                }
+            }
+        if (c == 1)
+        {
+            <span>已评教</span>
+        }
+        else
+        {
+           <button onclick="OnAJXBegin(this)" value="@item.ID">评教</button>
+        }
+    <br />
+        }
+    }
+
+}
+
+<script type="text/javascript">
+    function OnAJXBegin(ID) {
+        var id = ID.value;
+        $.ajax({
+            type: "post",
+            url: "TeacherQuestion",
+            data: { ID: id },
+            success: function (data) {
+                //window.location.href = '/Login/Index';
+                window.location.href = '@Url.Action("TeacherQuestion", "Evaluation")';
+            },
+            error: function () {
+                alert("系统错误，请与管理员联系!\n");
+            }
+        });
+
+    }
+    function OnComplete(result) {
+        window.parent.location.href = "@Url.Content("~/Evaluation/Question")";
+    }
+</script>
+

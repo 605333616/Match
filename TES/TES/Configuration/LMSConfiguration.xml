@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <element id="IUserService" Service="TES.Service.IUserService,TES.Service" Class="TES.Component.UserComponent,TES.Component"></element>
+  <element id="ISystemFunctionService" Service="TES.Service.ISystemFunctionService,TES.Service" Class="TES.Component.SystemFunctionComponent,TES.Component"></element>
+  <element id="IRoleService" Service="TES.Service.IRoleService,TES.Service" Class="TES.Component.RoleComponent,TES.Component"></element>
+  <element id="IQuestionService" Service="TES.Service.IQuestionService,TES.Service" Class="TES.Component.QuestionComponent,TES.Component"></element>
+  <element id="ITeacherService" Service="TES.Service.ITeacherService,TES.Service" Class="TES.Component.TeacherComponent,TES.Component"></element>
+  <element id="IStudentService" Service="TES.Service.IStudentService,TES.Service" Class="TES.Component.StudentComponent,TES.Component"></element>
+  <element id="IEvaluateService" Service="TES.Service.IEvaluateService,TES.Service" Class="TES.Component.EvaluateComponent,TES.Component"></element>
+  <element id="IClassService" Service="TES.Service.IClassService,TES.Service" Class="TES.Component.ClassComponent,TES.Component"></element>
+  <element id="IQuestiontypeService" Service="TES.Service.IQuestiontypeService,TES.Service" Class="TES.Component.QuestiontypeComponent,TES.Component"></element>
+</configuration>

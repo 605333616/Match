@@ -1,0 +1,109 @@
+﻿
+@using TES.Domain;
+@model Question
+@{
+    ViewBag.Title = "问卷创建";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var QuestiontypeList = ViewData["QuestiontypeList"] as IList<Questiontype>;
+}
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#chkAll").change(function () {
+            //实现全选或取消
+            var status = $(this).prop("checked");//获取当前的选择状态
+            $("#tbRoles").find("input:checkbox").each(function () {
+                $(this).prop("checked", status);
+            });
+            //将选择值存放到隐藏文本框中，存值规则为用逗号(,)隔开每个ID
+            var roleLise = "";
+            $("#tbRoles").find("input:checkbox").each(function () {
+                if ($(this).attr("id") != "chkAll") {//排除全选控件
+                    if ($(this).prop("checked")) {
+                        roleLise = roleLise + "," + $(this).attr("RoleID") + ","
+                    }
+                }
+            });
+            //将字符串赋值给文本框保存
+            $("#hdSelectedIds").val(roleLise);
+        });
+    });
+    //单个选择
+    function checkSingle(ctl) {
+        var hdSelectedIds = $("#hdSelectedIds").val();//获取隐藏文本框的roleID
+        var curId = "," + $(ctl).attr("RoleID") + ",";//获取当前的ID
+        //如果当前处于选中状态
+        if ($(ctl).prop("checked")) {
+            if (hdSelectedIds.indexOf("," + curId + ",") == -1) {
+                hdSelectedIds += curId;//如果不存在，则字符串叠加
+            }
+        }
+        else {
+            hdSelectedIds = hdSelectedIds.replace("," + curId + ",", "");
+        }
+        //给控件重新赋值
+        $("#hdSelectedIds").val(hdSelectedIds);
+    }
+</script>
+<p>
+    @Html.ActionLink("返回列表", "Index")
+</p>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value="保存" class="btn3" />
+    </p>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>问题信息</legend>
+        <div class="editor-label">
+            @Html.LabelFor(Model => Model.Topic)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(Model => Model.Topic)
+            @Html.ValidationMessageFor(Model => Model.Topic)
+        </div>
+    </fieldset>
+    <input type="hidden" id="hdSelectedIds" name="hdSelectedIds" value="," />
+    <fieldset>
+        <legend>试卷类</legend>
+        <table cellpadding="0" cellspacing="0" class="dataGrid" id="tbRoles">
+            <!--列头开始-->
+            <tr>
+                <th>
+                    <input type="checkbox" id="chkAll" />全选/取消
+                </th>
+                <th>
+                    角色名称
+                </th>
+            </tr>
+            <!--列头结束-->
+            <!--动态生成的行开始-->
+            @if (QuestiontypeList == null || QuestiontypeList.Count == 0)
+            {
+                <tr>
+                    <td colspan="2">
+                        <span>没有满足条件的记录！</span>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in QuestiontypeList)
+                {
+                    <tr>
+                        <td>
+                            @Html.CheckBox(item.ID.ToString(), new { RoleId = item.ID, onclick = "checkSingle(this)" })
+                        </td>
+                        <td>
+                            @item.QuestiontypeName
+                        </td>
+                    </tr>
+                }
+            }
+            <!--动态生成的行结束-->
+        </table>
+    </fieldset>
+}
+

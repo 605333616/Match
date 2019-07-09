@@ -1,0 +1,120 @@
+﻿@using TES.Apps
+@model PageList<TES.Domain.User>
+@using NHibernate.Criterion
+@using TES.Domain
+@using TES.Manager
+@using TES.Core
+@{
+    ViewBag.Title = "班级管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="@Url.Content("~/Content/css/ViewPage.css")" rel="stylesheet" type="text/css" />
+}
+<table cellpadding="0" cellspacing="0" class="dataGrid">
+    <tr><td>用户名</td><td>身份</td><td>编号</td><td>班级或所教班级</td><td>学院</td><td>性别</td><td>配置班级</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.UserName</td>
+            @{ IList<ICriterion>
+            criterion = new List<ICriterion>();
+             criterion.Add(Expression.Eq("ID", item.ID));
+             ManagerBase<Student>manager = new TES.Manager.ManagerBase<Student>();
+             Student student = manager.Get(criterion);
+
+             ManagerBase<Teacher> manager1 = new TES.Manager.ManagerBase<Teacher>();
+             Teacher teacher = manager1.Get(criterion);
+
+             if (student != null)
+             {
+            <td>学生</td>
+
+                <td>@student.StudentNumber</td>
+                <td>
+                        @{IList<Class> cla = Container.Instance.Resolve<TES.Service.IClassService>().GetAll();
+                        foreach (Class ime in cla)
+                        {
+                            if (ime.ClassNumber == student.Class.ToString())
+                            {
+                                 @ime.ClassName
+                                break;
+                            }
+                        }
+                        
+                        }
+                   
+                </td>
+                <td>@student.College</td>
+                 if (@student.Sex == 1)
+                 {
+                    <td>男</td>
+                 }
+                 else
+                 {
+                    <td>女</td>
+                 }
+                 <td>@Html.ActionLink("配置班级", "StudentManagement", "ClassManagement", new { StudentID = item.ID }, new { })</td>
+             }
+             else if (teacher != null && teacher.Leadership == true)
+             {
+                 <td>领导</td>
+
+                <td>@teacher.TeacherNumber</td>
+                <td>
+                 @{
+                   IList<Class> cla2 = Container.Instance.Resolve<TES.Service.IClassService>().GetAll();
+                   foreach (Class ime in cla2)
+                   {
+                       if (ime.TeacherId.ID == teacher.ID) {<span>@ime.ClassName</span><span>,</span> }
+                        
+                   }
+                   }
+                </td>
+                <td>@teacher.College</td>
+                 if (@teacher.Sex == 1)
+                 {
+                    <td>男</td>
+                 }
+                 else
+                 {
+                    <td>女</td>
+                 }
+                 <td>@Html.ActionLink("配置班级", "Index", "Authorize", new { roleID = item.ID }, new { })</td>
+             }
+
+             else if (teacher != null)
+             {
+            <td>老师</td>
+
+                <td>@teacher.TeacherNumber</td>
+                 <td>
+                 @{
+                   IList<Class> cla1 = Container.Instance.Resolve<TES.Service.IClassService>().GetAll();
+                   foreach (Class ime in cla1)
+                   {
+                       if (ime.TeacherId.ID == teacher.ID) {<span>@ime.ClassName</span><span>,</span> }
+                        
+                   }
+                   }
+                </td>
+                <td>@teacher.College</td>
+                 if (@teacher.Sex == 1)
+                 {
+                    <td>男</td>
+                 }
+                 else
+                 {
+                    <td>女</td>
+                 }
+                 <td>@Html.ActionLink("配置班级", "Index", "Authorize", new { roleID = item.ID }, new { })</td>
+             }
+             
+            }
+        </tr>
+    }
+</table>
+
+<script type="text/JavaScript">
+    function gradeChange() {
+        
+    }
+</script>

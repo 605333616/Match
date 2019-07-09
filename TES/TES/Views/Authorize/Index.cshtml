@@ -1,0 +1,113 @@
+﻿@using TES.Domain;
+@model Role
+@{
+    ViewBag.Title = "配置权限";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var FunctionList = ViewBag.FunctionList as IList<SystemFunction>;
+    var topFunctionList = ViewData["TopFunctions"] as IList<SystemFunction>;
+}
+<link href="@Url.Content("~/Content/Style/ViewPage.css")" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript">
+    function SubmitForm() {
+        $("form").eq(0).submit();
+    }
+</script>
+<p>
+    @Html.ActionLink("返回列表", "Index","Role")
+</p>
+<fieldset>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.RoleName):
+        @Html.DisplayFor(model => model.RoleName)
+    </div>
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        @Html.HiddenFor(m => m.ID)
+        @Html.Hidden("roleID", Model.ID)
+        <span>筛选：</span>
+        @Html.DropDownList("topFunctionID", new SelectList(topFunctionList, "ID", "SystemFunctionName"), "-----全部-----", new { onchange = "SubmitForm()" })
+    </p>
+    <table cellpadding="0" cellspacing="0" class="dataGrid" id="tbFuns">
+        <tr>
+            <th style="text-align:center">
+                操作权限
+                <input type="checkbox" title="全选/取消全选" id="chkAll" />
+            </th>
+            <th style="text-align:center">
+                功能名称
+            </th>
+        </tr>
+        @if (FunctionList == null || FunctionList.Count() == 0)
+        {
+            <tr>
+                <td colspan="12">
+                    没有满足条件的记录
+                </td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in FunctionList)
+            {
+                <tr>
+                    <td>
+                        @Html.CheckBoxFor(itemItem => item.IsChecked, new { FunID = item.ID })
+                    </td>
+                    <td>
+                        @item.SystemFunctionName
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+}
+@using (Html.BeginForm("AssignAuthorize", "Authorize"))
+{
+    <p>
+        @Html.Hidden("roleID", Model.ID)
+        @Html.Hidden("hdSelectedIds")
+        <input type="submit" class="btn3" value="保存" onclick="return CheckSelectedRoles()" />
+    </p>
+}
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $("#chkAll").change(function () {
+            var status = $(this).prop("checked");
+            $("#tbFuns").find("input:checkbox").each(function () {
+                $(this).prop("checked", status);
+            });
+            var roleList = "";
+            $("#tbFuns").find("input:checkbox").each(function () {
+                if ($(this).prop("id") != "chkAll") {
+                    if ($(this).prop("checked")) {
+                        roleList = roleList + "," + $(this).attr("FunID") + ","
+                    }
+                }
+            });
+            $("#hdSelectedIds").val(roleList);
+        });
+        $("#tbFuns").find("input:checkbox[id!=chkAll]").change(function () {
+            var hdSelectedIds = $("#hdSelectedIds").val();
+            var curId = "," + $(this).attr("FunID") + ",";
+            if ($(this).prop("checked")) {
+                if (hdSelectedIds.indexOf(curId) == -1) {
+                    hdSelectedIds += curId;
+                }
+            }
+            else {
+                hdSelectedIds = hdSelectedIds.replace(curId, "");
+            }
+            $("#hdSelectedIds").val(hdSelectedIds);
+        });
+    });
+    function CheckSelectedRoles() {
+        if ($("#hdSelectedIds").val() == "," || $("#hdSelectedIds").val() == "") {
+            if (confirm("不打算配置功能吗？")) {
+                return true;
+            }
+            return false;
+        }
+    }
+</script>

@@ -1,0 +1,99 @@
+﻿@model TES.Domain.User
+@{
+    ViewBag.Title = "配置角色";
+    <link href="@Url.Content("~/Content/Style/ViewPage.css")" rel="stylesheet" type="text/css" />
+    var roleList = ViewBag.RoleList as IList<TES.Domain.Role>;
+    var roleListId = "";
+}
+<fieldset>
+    <p>
+        <input type="submit" value="保存" class="btn3" />
+    </p>
+    <legend>
+        用户信息
+    </legend>
+    <div class="display-label" style="float:left">
+        @Html.LabelFor(model => model.UserName)
+    </div>
+    <div class="display-field" style="float:left">@Model.UserName</div>
+    <div class="display-label" style="float:left">
+        @Html.LabelFor(model => model.Account)
+    </div>
+    <div class="display-field" style="float:left">@Model.Account</div>
+    <div class="display-label" style="float:left">
+        @Html.LabelFor(model => model.IsActive)
+    </div>
+    <div class="display-field" style="float:left">@(Model.IsActive == true ? "激活" : "未激活")</div>
+    @using (Html.BeginForm())
+    {
+        @Html.Hidden("userId", Model.ID)
+        <table border="0" width="98%" class="dataGrid" id="tbRoles">
+            <tr>
+                <td>
+                    @Html.CheckBox("chkAll")选择
+                </td>
+                <td>角色名称</td>
+            </tr>
+            @foreach (var item in roleList)
+            {
+                <tr>
+                    <td>
+                        @Html.CheckBox(item.ID.ToString(), item.IsChecked, new { RoleID = item.ID })
+                        @{
+                if (item.IsChecked)
+                {
+                    roleListId += "," + item.ID + ",";
+                }
+                        }
+                    </td>
+                    <td>@item.RoleName</td>
+                </tr>
+            }
+        </table>
+        <input type="text" name="hdSelectedIds" id="hdSelectedIds" value="@roleListId" />
+        <input type="submit" value="保存" />
+    }
+</fieldset>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#chkAll").change(function () {
+            var status = $(this).prop("checked");
+            $("#tbRoles").find("input:checkbox").each(function () {
+                $(this).prop("checked", status);
+            });
+            var roleList = "";
+            $("#taRoles").find("input:checkbox").each(function () {
+                if ($(this).prop(("id") != "chkAll")) {
+                    debugger
+                    if ($(this).prop("checked")) {
+                        roleList = roleList + "," + $(this).prop("RoleID") + ","
+                    }
+                }
+            });
+            $("#hdSelectedIds").val(roleList);
+        });
+        $("#tbRoles").find("input:checkbox[name!=chkAll]").change(function () {
+            var hdSelectedIds = $("#hdSelectedIds").val();
+            var curId = "," + $(this).attr("RoleID") + ",";
+            if ($(this).prop("checked")) {
+                if (hdSelectedIds.indexOf(curId) == -1) {
+                    hdSelectedIds += curId;
+                }
+            }
+            else {
+                hdSelectedIds = hdSelectedIds.replace(curId, "");
+            }
+            $("#hdSelectedIds").val(hdSelectedIds);
+        });
+    });
+    function CheckSelectedRoles() {
+        if ($("#hdSelectedIds").val() == "," || $("#hdSelectedIds").val == "") {
+            if (confirm("不打算配置角色吗？")) {
+                return true;
+            }
+            return false;
+        }
+    }
+</script>
